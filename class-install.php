@@ -6,7 +6,7 @@ class CH_Install {
         $this->hook();
     }
 
-    protected function hook() {
+    public function hook() {
         register_activation_hook( 
             CG_PLUGIN_FILE,
             [ $this, 'handle_activate' ]
@@ -17,15 +17,16 @@ class CH_Install {
         $this->init_db();
     }
 
-    protected function init_db() {
+    public function init_db() {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
-        $table_name = 'ch_cards';
+        $table_name = pluginSlug;
 
         $sql = "CREATE TABLE $table_name (
             id int AUTO_INCREMENT PRIMARY KEY,
             active boolean NOT NULL DEFAULT 1,
-            cardname text NOT NULL
+            user text NOT NULL,
+            pass text NOT NULL,
         ) $charset_collate;";
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
