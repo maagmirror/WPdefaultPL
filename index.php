@@ -1,12 +1,16 @@
 <?php
 /**
- * Plugin Name: Tarjetas en Homepage
+ * Plugin Name: Plugin Name
  * Plugin URI: https://nibiru.com.uy
- * Description: Tarjetas y sus respectivos recargos con shortcode
+ * Description: service
  * Version: 1.0
  * Author: Nibiru Team
  * Author URI: https://nibiru.com.uy
  */
+
+const pluginTitle = 'Plugin Name';
+const pluginSlug = 'plugin_name';
+const pluginIcon = 'dashicons-tagcloud';
 
 define( 'CG_PLUGIN_FILE' , plugin_dir_path( __FILE__ ) . 'index.php');
 
