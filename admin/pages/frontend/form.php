@@ -3,7 +3,11 @@
 
 echo "<h2>" . pluginTitle . "</h2>";
 
-global $wpdb; 
+
+
+// Incluir el archivo de configuración y conexión a la base de datos
+// include 'config.php';
+global $wpdb;
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos del formulario
@@ -29,15 +33,68 @@ $datosUsuario = $wpdb->get_row($wpdb->prepare('SELECT user, pass FROM nibiru_ser
 
 <!-- Formulario para actualizar datos -->
 <form method="post" action="">
-    <label for="nuevoUsuario">Nuevo Usuario:</label>
-    <input type="text" name="nuevoUsuario" id="nuevoUsuario" class="regular-text" value="<?php echo esc_attr($datosUsuario['user']); ?>" required>
+    <label for="nuevoUsuario">Usuario:</label>
+    <input type="text" name="nuevoUsuario" id="nuevoUsuario" class="regular-text"
+        value="<?php echo esc_attr($datosUsuario['user']); ?>" required>
 
     <br>
 
-    <label for="nuevaContraseña">Nueva Contraseña:</label>
-    <input type="password" name="nuevaContraseña" id="nuevaContraseña" class="regular-text" value="<?php echo esc_attr($datosUsuario['pass']); ?>" required>
+    <label for="nuevaContraseña">Contraseña:</label>
+    <input type="password" name="nuevaContraseña" id="nuevaContraseña" class="regular-text"
+        value="<?php echo esc_attr($datosUsuario['pass']); ?>" required>
 
     <br>
 
     <input type="submit" value="Actualizar" class="button button-primary">
+
 </form>
+
+<hr><br></hr>
+
+<input type="submit" value="Importar" class="button button-primary" id="actualizarBtn">
+<!-- Div para mostrar la respuesta -->
+<div id="respuestaDiv"></div>
+
+<script>
+    // Script de jQuery para manejar la solicitud AJAX
+    jQuery(document).ready(function ($) {
+        $('#actualizarBtn').on('click', function (e) {
+            e.preventDefault();
+
+            // Obtén los datos del formulario
+            var nuevoUsuario = $('#nuevoUsuario').val();
+            var nuevaContraseña = $('#nuevaContraseña').val();
+
+            // Realiza la solicitud AJAX
+            $.ajax({
+                type: 'POST',
+                url: 'ajax-handler.php',  // Ruta al archivo PHP de manejo de AJAX
+                data: {
+                    nuevoUsuario: nuevoUsuario,
+                    nuevaContraseña: nuevaContraseña
+                },
+                dataType: 'json',
+                success: function (response) {
+                    // Muestra la respuesta en el div
+                    $('#respuestaDiv').append('<p>' + response.resultado + '</p>');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    // Muestra mensajes de error en el div
+                    $('#respuestaDiv').append('<p>Error en la solicitud AJAX: ' + textStatus + ' - ' + errorThrown + '</p>');
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    #respuestaDiv {
+        width: 50%;
+        height: 400px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        background-color: #d8d8d8;
+        padding: 10px;
+        margin-top: 20px;
+    }
+</style>
