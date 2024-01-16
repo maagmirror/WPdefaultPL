@@ -1,4 +1,4 @@
 <?php
-#aca va lo que el nico va a ver
+// render in admin page
 
-echo "<h1> nico ola </h1>";
+echo "<h2>" . pluginTitle . "</h2>";
