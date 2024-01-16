@@ -20,19 +20,25 @@ class CH_Install {
     public function init_db() {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
-        $table_name = pluginSlug;
-
+        $table_name = 'nibiru_service';
+    
         $sql = "CREATE TABLE $table_name (
             id int AUTO_INCREMENT PRIMARY KEY,
             active boolean NOT NULL DEFAULT 1,
             user text NOT NULL,
-            pass text NOT NULL,
-        ) $charset_collate;";
-
+            pass text NOT NULL
+        ) $charset_collate";
+    
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
-        dbDelta($sql);
+    
+        $result = dbDelta($sql);
+    
+        if ($wpdb->last_error) {
+            // Handle the error, for example:
+            error_log("Database error: " . $wpdb->last_error);
+        }
     }
+    
 }
 
 new CH_Install();
